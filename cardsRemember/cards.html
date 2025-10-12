@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory-Cards Game</title>
+    <link rel="stylesheet" href="cards.css">
+</head>
+<body>
+    <div class="container">
+        <div class="info">
+            <h1>Memory-Cards Game</h1>
+            <div class="steps">Steps: <span id="moves">0</span></div>
+        </div>
+        <div id="memory-grid" class="memory-grid"></div>
+    </div>
+
+    <div id="custom-alert" class="custom-alert" style="display: none;">
+        <div class="alert-content">
+            <h2>You win!</h2>
+            <p>Steps: <span id="win-moves">0</span></p>
+            <button id="alert-close-btn">Restart</button>
+        </div>
+    </div>
+
+    <script src="cards.js"></script>
+</body>
+</html>
