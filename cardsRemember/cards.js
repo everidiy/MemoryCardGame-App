@@ -6,7 +6,7 @@ class MemoryCard {
         this.matchedPairs = 0;
         this.time = 60;
         this.timerInterval = null;
-        this.setupHandleBtn();
+        this.closeAlert();
     }
 
     initializeGame() {
@@ -15,8 +15,8 @@ class MemoryCard {
 
         this.cards = pairs.map((smile, index) => {
             return {
-                emoji: smile, 
-                id: index, 
+                emoji: smile,
+                id: index,
                 flipped: false,
                 matched: false
             }
@@ -28,7 +28,7 @@ class MemoryCard {
         }
     }
 
-    renderGrid() {
+    renderGame() {
         const grid = document.getElementById('memory-grid');
         grid.innerHTML = "";
 
@@ -37,27 +37,27 @@ class MemoryCard {
             cardElement.className = "memory-card";
 
             if (card.flipped || card.matched) {
-                cardElement.textContent = card.emoji;
+                cardElement.textContent = card.emoji
             } else {
-                cardElement.textContent = "?";
-            }
+                cardElement.textContent = "?"
+            } 
 
-            cardElement.addEventListener("click", () => {
-                const clickedCard = this.cards.find(c => c.id === card.id);
+            cardElement.addEventListener('click', () => {
+                const clickedCard = this.cards.find(c => c.id === card.id)
 
                 if (clickedCard.flipped || clickedCard.matched || this.flippedCards.length === 2) return;
 
                 clickedCard.flipped = true;
                 this.flippedCards.push(clickedCard);
 
-                this.renderGrid();
+                this.renderGame();
 
                 if (this.flippedCards.length === 2) {
-                    this.checkMatch()
+                    this.checkMatch();
                 }
-            });
+            })
 
-            grid.appendChild(cardElement);
+            grid.appendChild(cardElement)
         })
     }
 
@@ -66,60 +66,63 @@ class MemoryCard {
         this.moves++;
 
         if (card1.emoji === card2.emoji) {
+            this.matchedPairs++;
             card1.matched = true;
             card2.matched = true;
-            this.matchedPairs++;
-            this.flippedCards = []
-            this.renderGrid()
+            this.flippedCards = [];
+            this.renderGame()
         } else {
             setTimeout(() => {
                 card1.flipped = false;
                 card2.flipped = false;
-                this.flippedCards = []
-                this.renderGrid()
-            }, 500)
+                this.flippedCards = [];
+                this.renderGame()
+            }, 300)
         }
 
         if (this.matchedPairs === this.cards.length / 2) {
             setTimeout(() => {
-                this.showWinMessage();
+                this.showWin();
 
                 if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
+                    clearInterval(this.timerInterval)
                 }
             }, 300)
         }
 
-        this.updateStats()
+        this.updateStats();
     }
 
     updateStats() {
-        const steps = document.getElementById("moves");
-        steps.textContent = this.moves;
+        const text = document.getElementById("moves");
+        text.textContent = this.moves;
     }
 
-    showWinMessage() {
-        document.getElementById("custom-alert").style.display = "flex";
+    showWin() {
+        document.getElementById('custom-alert').style.display = "flex";
         document.getElementById('win-moves').textContent = this.moves;
 
+        document.querySelector("h2").textContent = "You win!";
+
         if (this.timerInterval) {
-            clearInterval(this.timerInterval);
+            clearInterval(this.timerInterval)
         }
     }
 
-    showLoseMessage() {
-        document.getElementById("custom-alert").style.display = "flex";
+    showLose() {
+        document.getElementById('custom-alert').style.display = "flex";
         document.getElementById('win-moves').textContent = this.moves;
-        document.querySelector('h2').textContent = "You lose!";
+
+        document.querySelector("h2").textContent = "You lose!";
 
         if (this.timerInterval) {
-            clearInterval(this.timerInterval);
+            clearInterval(this.timerInterval)
         }
     }
 
-    setupHandleBtn() {
-        document.getElementById('alert-close-btn').addEventListener("click", () => {
-            document.getElementById("custom-alert").style.display = "none";
+    closeAlert() {
+        document.getElementById("alert-close-btn").addEventListener("click", () => {
+            document.getElementById('custom-alert').style.display = "none";
             this.restartGame();
         })
     }
@@ -137,14 +140,14 @@ class MemoryCard {
             document.getElementById('timer').textContent = currentTime;
 
             if (currentTime <= 0) {
-                this.showLoseMessage();
+                this.showLose();
             }
-        }, 1000)
+        }, 1000);
     }
 
     restartGame() {
         if (this.timerInterval) {
-            clearInterval(this.timerInterval);
+            clearInterval(this.timerInterval)
             this.timerInterval = null;
         }
 
@@ -154,15 +157,15 @@ class MemoryCard {
         this.matchedPairs = 0;
         this.time = 60;
         this.initializeGame();
-        this.renderGrid();
-        this.timer();
+        this.renderGame();
         this.updateStats();
-
-        document.querySelector('h2').textContent = "You Win!";
+        this.timer()
+        
+        document.querySelector("h2").textContent = "Your result is..";
     }
 }
 
 const game = new MemoryCard();
 game.initializeGame();
-game.renderGrid();
+game.renderGame();
 game.timer();
